@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet Competition Homework - Part 2: Competition Management and Championship</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 1rem;
+      }
+
+      h1,
+      h2,
+      h3 {
+        color: #2c3e50;
+        margin-top: 2rem;
+      }
+
+      pre {
+        background: #f8f9fa;
+        border-radius: 4px;
+        padding: 1rem;
+        overflow-x: auto;
+        border: 1px solid #e9ecef;
+        width: calc(100% - 2rem);
+      }
+
+      .keyword {
+        color: #0033b3;
+      }
+      .string {
+        color: #067d17;
+      }
+      .comment {
+        color: #8c8c8c;
+      }
+      .number {
+        color: #1750eb;
+      }
+      .type {
+        color: #000080;
+      }
+
+      .tip {
+        background: #e3f2fd;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+      }
+
+      .warning {
+        background: #fff3e0;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Creating the Pet Show Management System! 🎪</h1>
+
+    <p>
+      Now that we have our competitions working, let's create a system to manage a complete pet show! We'll create a
+      PetShow class that can run multiple events and track overall results.
+    </p>
+
+    <h2>Step 1: Creating the PetShow Class</h2>
+
+    <p>Here's the basic structure of our PetShow class:</p>
+
+    <pre><span class="keyword">public class</span> PetShow {
+    <span class="keyword">private</span> String showName;
+    <span class="keyword">private</span> ArrayList&lt;CompetitionEvent&gt; events;
+    <span class="keyword">private</span> ArrayList&lt;Pet&gt; registeredPets;
+    <span class="keyword">private</span> HashMap&lt;Pet, Integer&gt; overallScores;
+    
+    <span class="keyword">public</span> PetShow(String showName) {
+        <span class="keyword">this</span>.showName = showName;
+        <span class="keyword">this</span>.events = <span class="keyword">new</span> ArrayList&lt;&gt;();
+        <span class="keyword">this</span>.registeredPets = <span class="keyword">new</span> ArrayList&lt;&gt;();
+        <span class="keyword">this</span>.overallScores = <span class="keyword">new</span> HashMap&lt;&gt;();
+    }
+    
+    <span class="keyword">public void</span> addEvent(CompetitionEvent event) {
+        events.add(event);
+    }
+    
+    <span class="keyword">public void</span> registerPet(Pet pet) {
+        <span class="keyword">if</span> (!registeredPets.contains(pet)) {
+            registeredPets.add(pet);
+            overallScores.put(pet, <span class="number">0</span>);
+        }
+    }
+}</pre>
+
+    <h2>Step 2: Running the Show</h2>
+
+    <p>Add methods to run all events and track scores:</p>
+
+    <pre><span class="keyword">public void</span> runShow() {
+    System.out.println(<span class="string">"\n=== "</span> + showName + <span class="string">" ==="</span>);
+    System.out.println(<span class="string">"Registered Pets: "</span> + registeredPets.size());
+    System.out.println(<span class="string">"Total Events: "</span> + events.size() + <span class="string">"\n"</span>);
+    
+    <span class="comment">// Register pets for each event they qualify for</span>
+    <span class="keyword">for</span> (CompetitionEvent event : events) {
+        <span class="keyword">for</span> (Pet pet : registeredPets) {
+            event.registerPet(pet);
+        }
+    }
+    
+    <span class="comment">// Run each event</span>
+    <span class="keyword">for</span> (CompetitionEvent event : events) {
+        System.out.println(<span class="string">"\nRunning "</span> + event.getEventName() + <span class="string">"..."</span>);
+        event.runCompetition();
+        event.displayResults();
+        updateOverallScores(event);
+    }
+    
+    <span class="comment">// Display final standings</span>
+    displayFinalStandings();
+}</pre>
+
+    <div class="tip">
+      <strong>Challenge:</strong> How will you update the overall scores? Should some events be worth more points than
+      others? Think about creating a fair scoring system! 🤔
+    </div>
+
+    <h2>Step 3: Your Tasks</h2>
+
+    <p>Complete these methods in the PetShow class:</p>
+
+    <ol>
+      <li>
+        Implement updateOverallScores:
+        <pre><span class="keyword">private void</span> updateOverallScores(CompetitionEvent event) {
+    <span class="comment">// TODO: Update overall scores based on event results</span>
+    <span class="comment">// Hint: Get competitors from the event and update HashMap</span>
+}</pre>
+      </li>
+      <li>
+        Implement displayFinalStandings:
+        <pre><span class="keyword">private void</span> displayFinalStandings() {
+    <span class="comment">// TODO: Sort pets by score and display rankings</span>
+    <span class="comment">// Bonus: Add special awards or categories!</span>
+}</pre>
+      </li>
+    </ol>
+
+    <h2>Step 4: Testing the System</h2>
+
+    <p>Here's how to test your PetShow:</p>
+
+    <pre><span class="keyword">public static void</span> main(String[] args) {
+    <span class="comment">// Create the pet show</span>
+    PetShow show = <span class="keyword">new</span> PetShow(<span class="string">"Happy Paws Pet Show 2024"</span>);
+    
+    <span class="comment">// Create pets</span>
+    Dog buddy = <span class="keyword">new</span> Dog(<span class="string">"Buddy"</span>, <span class="number">3</span>);
+    Cat whiskers = <span class="keyword">new</span> Cat(<span class="string">"Whiskers"</span>, <span class="number">5</span>);
+    Dog max = <span class="keyword">new</span> Dog(<span class="string">"Max"</span>, <span class="number">2</span>);
+    
+    <span class="comment">// Register pets</span>
+    show.registerPet(buddy);
+    show.registerPet(whiskers);
+    show.registerPet(max);
+    
+    <span class="comment">// Create and add events</span>
+    show.addEvent(<span class="keyword">new</span> FetchCompetition());
+    show.addEvent(<span class="keyword">new</span> AgilityCompetition());
+    
+    <span class="comment">// Prepare pets</span>
+    buddy.trainFetch();
+    
+    <span class="comment">// Run the show!</span>
+    show.runShow();
+}</pre>
+
+    <h2>Expected Output</h2>
+
+    <pre>
+=== Happy Paws Pet Show 2024 ===
+Registered Pets: 3
+Total Events: 2
+
+Running Fetch Competition...
+Buddy is registered for Fetch Competition!
+Max is registered for Fetch Competition!
+Sorry, Whiskers cannot compete in Fetch!
+[... competition results ...]
+
+Running Agility Competition...
+[... competition results ...]
+
+=== Final Standings ===
+🥇 1st Place: Buddy - 45 points
+🥈 2nd Place: Max - 30 points
+🥉 3rd Place: Whiskers - 25 points
+
+Special Awards:
+🌟 Best Dog: Buddy
+😺 Most Agile Cat: Whiskers</pre
+    >
+
+    <div class="warning">
+      <strong>Remember:</strong>
+      <ul>
+        <li>Keep track of which pets competed in each event</li>
+        <li>Make sure scoring is fair across different events</li>
+        <li>Consider adding weight factors for different events</li>
+        <li>Add clear, formatted output</li>
+      </ul>
+    </div>
+
+    <h2>What's Next?</h2>
+
+    <p>In this final section, we'll add:</p>
+    <ul>
+      <li>Special achievements and medals</li>
+      <li>Different competition categories</li>
+      <li>A grand finale event</li>
+      <li>Championship titles</li>
+    </ul>
+
+    <div class="tip">
+      <strong>Bonus Challenge:</strong> Can you think of a way to save the competition results to use them in the final
+      section? Maybe create a Results class to store the information? 🏆
+    </div>
+
+    <h1>Making it Professional - Championship Features! 🏆</h1>
+
+    <p>
+      Time to turn our pet show into a proper championship! We'll add achievement tracking, special awards, and a grand
+      finale event!
+    </p>
+
+    <h2>Step 1: Achievement System</h2>
+
+    <p>First, let's create classes to track achievements and results:</p>
+
+    <pre><span class="keyword">public enum</span> AchievementType {
+    GOLD(<span class="number">3</span>), SILVER(<span class="number">2</span>), BRONZE(<span class="number">1</span>), SPECIAL(<span class="number">5</span>);
+    
+    <span class="keyword">private final int</span> points;
+    
+    AchievementType(<span class="keyword">int</span> points) {
+        <span class="keyword">this</span>.points = points;
+    }
+    
+    <span class="keyword">public int</span> getPoints() {
+        <span class="keyword">return</span> points;
+    }
+}
+
+<span class="keyword">public class</span> Achievement {
+    <span class="keyword">private</span> String title;
+    <span class="keyword">private</span> String description;
+    <span class="keyword">private</span> AchievementType type;
+    
+    <span class="keyword">public</span> Achievement(String title, String description, AchievementType type) {
+        <span class="keyword">this</span>.title = title;
+        <span class="keyword">this</span>.description = description;
+        <span class="keyword">this</span>.type = type;
+    }
+    
+    <span class="comment">// Add getters here</span>
+}
+
+<span class="keyword">public class</span> CompetitionResult {
+    <span class="keyword">private</span> Pet pet;
+    <span class="keyword">private</span> String eventName;
+    <span class="keyword">private int</span> score;
+    <span class="keyword">private</span> ArrayList&lt;Achievement&gt; achievements;
+    
+    <span class="comment">// Constructor and methods</span>
+}</pre>
+
+    <h2>Step 2: The Grand Finale Event</h2>
+
+    <p>Create a special event for top performers:</p>
+
+    <pre><span class="keyword">public class</span> GrandFinale <span class="keyword">extends</span> CompetitionEvent {
+    <span class="keyword">private static final int</span> MIN_SCORE_TO_QUALIFY = <span class="number">30</span>;
+    
+    <span class="keyword">public</span> GrandFinale() {
+        <span class="keyword">super</span>(<span class="string">"Grand Finale Championship"</span>);
+    }
+    
+    <span class="annotation">@Override</span>
+    <span class="keyword">protected boolean</span> canCompete(Pet pet) {
+        <span class="comment">// Check if pet has enough points from previous events</span>
+        <span class="keyword">return</span> getPetTotalScore(pet) >= MIN_SCORE_TO_QUALIFY;
+    }
+    
+    <span class="annotation">@Override</span>
+    <span class="keyword">public void</span> runCompetition() {
+        System.out.println(<span class="string">"🎭 Welcome to the Grand Finale! 🎭"</span>);
+        <span class="comment">// Implement multi-round competition</span>
+    }
+}</pre>
+
+    <h2>Step 3: Enhance PetShow</h2>
+
+    <p>Update the PetShow class to handle achievements and championships:</p>
+
+    <pre><span class="keyword">public class</span> PetShow {
+    <span class="comment">// Existing fields...</span>
+    <span class="keyword">private</span> HashMap&lt;Pet, ArrayList&lt;Achievement&gt;&gt; achievements;
+    <span class="keyword">private</span> ArrayList&lt;CompetitionResult&gt; results;
+    
+    <span class="keyword">public void</span> awardAchievement(Pet pet, String title, 
+                                  String description, AchievementType type) {
+        Achievement achievement = <span class="keyword">new</span> Achievement(title, description, type);
+        achievements.computeIfAbsent(pet, k -> <span class="keyword">new</span> ArrayList&lt;&gt;())
+                   .add(achievement);
+    }
+    
+    <span class="keyword">public void</span> displayHallOfFame() {
+        <span class="comment">// TODO: Display top achievers</span>
+    }
+}</pre>
+
+    <h2>Your Tasks</h2>
+
+    <ol>
+      <li>
+        Complete the GrandFinale class:
+        <ul>
+          <li>Create multiple rounds of competition</li>
+          <li>Eliminate lowest scorers each round</li>
+          <li>Award special achievements to finalists</li>
+        </ul>
+      </li>
+      <li>
+        Add achievement criteria:
+        <ul>
+          <li>"Perfect Score" for 100% in any event</li>
+          <li>"Versatility" for competing in all events</li>
+          <li>"Most Improved" for score increases</li>
+          <li>"Crowd Favorite" based on random chance</li>
+        </ul>
+      </li>
+      <li>
+        Create a commentary system:
+        <pre><span class="keyword">public class</span> Commentator {
+    <span class="keyword">public static void</span> announceEvent(String message) {
+        System.out.println(<span class="string">"📢 "</span> + message);
+    }
+    
+    <span class="keyword">public static void</span> announceAchievement(Pet pet, 
+                                             Achievement achievement) {
+        <span class="comment">// TODO: Implement this</span>
+    }
+}</pre>
+      </li>
+    </ol>
+
+    <h2>Final Implementation</h2>
+
+    <p>Put it all together:</p>
+
+    <pre><span class="keyword">public static void</span> main(String[] args) {
+    PetShow championship = <span class="keyword">new</span> PetShow(<span class="string">"2024 Pet Championship"</span>);
+    
+    <span class="comment">// Register pets</span>
+    Dog buddy = <span class="keyword">new</span> Dog(<span class="string">"Buddy"</span>, <span class="number">3</span>);
+    Cat whiskers = <span class="keyword">new</span> Cat(<span class="string">"Whiskers"</span>, <span class="number">5</span>);
+    Dog max = <span class="keyword">new</span> Dog(<span class="string">"Max"</span>, <span class="number">2</span>);
+    
+    championship.registerPet(buddy);
+    championship.registerPet(whiskers);
+    championship.registerPet(max);
+    
+    <span class="comment">// Add regular events</span>
+    championship.addEvent(<span class="keyword">new</span> FetchCompetition());
+    championship.addEvent(<span class="keyword">new</span> AgilityCompetition());
+    
+    <span class="comment">// Run regular events</span>
+    championship.runShow();
+    
+    <span class="comment">// Add and run grand finale</span>
+    championship.addEvent(<span class="keyword">new</span> GrandFinale());
+    
+    <span class="comment">// Display final results and hall of fame</span>
+    championship.displayHallOfFame();</pre>
+
+    <h2>Expected Output</h2>
+
+    <pre>
+=== 2024 Pet Championship ===
+[Regular events run here...]
+
+🎭 Grand Finale Championship 🎭
+Qualified Competitors: 2
+Round 1: Obstacle Course Challenge
+Round 2: Talent Showcase
+Final Round: Championship Performance
+
+🏆 Championship Results 🏆
+Overall Champion: Buddy
+Runner Up: Max
+
+🌟 Special Achievements 🌟
+Buddy: Perfect Score (Fetch Competition)
+Whiskers: Most Improved (Agility)
+Max: Crowd Favorite
+
+Hall of Fame Inductees:
+🥇 Buddy - Championship Winner 2024
+</pre
+    >
+
+    <div class="warning">
+      <strong>Final Requirements:</strong>
+      <ul>
+        <li>All achievements must be properly tracked</li>
+        <li>Grand Finale must be challenging but fair</li>
+        <li>Commentary should be engaging</li>
+        <li>Results should be clearly formatted</li>
+      </ul>
+    </div>
+
+    <h2>Congratulations! 🎉</h2>
+
+    <p>You've built a complete pet competition system using:</p>
+    <ul>
+      <li>Inheritance hierarchies</li>
+      <li>Polymorphism</li>
+      <li>Data structures</li>
+      <li>Clean code organization</li>
+    </ul>
+
+    <div class="tip">
+      <strong>Extra Challenge:</strong> Can you think of ways to make this system even better? Perhaps add persistence
+      to save results between runs? Or create a text-based menu system for running competitions? The possibilities are
+      endless! 🚀
+    </div>
+  </body>
+</html>
